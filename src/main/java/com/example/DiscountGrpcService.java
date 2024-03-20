@@ -53,9 +53,7 @@ public class DiscountGrpcService implements DiscountService{
     @Override
     public Uni<ProductIdResponse> deleteDiscount(DeleteDiscountRequest request) {
         discountRepository.delete("productId", request.getProductId());
-        ProductIdResponse response = ProductIdResponse.newBuilder()
-                .setProductId(request.getProductId())
-                .build();
+        ProductIdResponse response = ProductIdResponse.newBuilder().setProductId(request.getProductId()).build();
 
         return Uni.createFrom().item(response);
     }
@@ -63,9 +61,7 @@ public class DiscountGrpcService implements DiscountService{
     @Override
     public Uni<ProductIdResponse> updateDiscount(UpdateDiscountRequest request) {
         discountRepository.update("discount", request.getDiscount()).where("productId", request.getProductId());
-        ProductIdResponse response = ProductIdResponse.newBuilder()
-                .setProductId(request.getProductId())
-                .build();
+        ProductIdResponse response = ProductIdResponse.newBuilder().setProductId(request.getProductId()).build();
 
         return Uni.createFrom().item(response);
     }
