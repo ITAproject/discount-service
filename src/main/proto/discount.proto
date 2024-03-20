@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example";
+option java_outer_classname = "HelloGrpcProto";
+
+service DiscountService {
+  rpc GetDiscount(GetDiscountRequest) returns (DiscountResponse) {}
+  rpc SetDiscount(SetDiscountRequest) returns (DiscountResponse) {}
+  rpc DeleteDiscount(DeleteDiscountRequest) returns (ProductIdResponse) {}
+  rpc UpdateDiscount(UpdateDiscountRequest) returns (ProductIdResponse) {}
+}
+
+message SetDiscountRequest {
+  string productId = 1;
+  int32 discount = 3;
+
+}
+
+message GetDiscountRequest {
+  string productId = 1;
+}
+
+message DiscountResponse {
+  string id = 1;
+  string productId = 2;
+  int32 discount = 3;
+}
+
+message DeleteDiscountRequest {
+  string productId = 1;
+}
+
+message UpdateDiscountRequest {
+  string productId = 1;
+  int32 discount = 2;
+}
+
+message ProductIdResponse {
+  string productId = 1;
+}
+

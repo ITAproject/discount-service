@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb_discounts
+    ports:
+      - "27017:27017"
+    volumes:
+      - flashscore_discount_data:/data/db
+    networks:
+      - flashscore-network
+
+  flashscore-discounts-api:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: flashscore-discounts-api
+    ports:
+      - "8081:8080"
+      - "9001:9000"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_DB=discounts
+    depends_on:
+      - mongodb
+    networks:
+      - flashscore-network
+volumes:
+  flashscore_discount_data:
+
+networks:
+  flashscore-network:
