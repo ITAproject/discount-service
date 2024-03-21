@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DiscountGrpcServiceTest {
 
         @GrpcClient
-        DiscountServiceGrpc client;
+        DiscountService client;
 
         @BeforeEach
         void beforeEach() {
@@ -22,8 +22,16 @@ public class DiscountGrpcServiceTest {
 
         @Test
         public void shouldCreateDiscount() {
-            Discount discount = Discount.newBuilder().setProductId("1").setDiscount(10).build();
-            int discountNum = client.create(discount).await().indefinitely().getDiscount();
+            SetDiscountRequest discount = SetDiscountRequest.newBuilder().setProductId("1").setDiscount(10).build();
+            int discountNum = client.setDiscount(discount).await().indefinitely().getDiscount();
+            assertEquals(10, discountNum);
+        }
+
+        @Test
+        public void shouldGetDiscount() {
+            SetDiscountRequest discount = SetDiscountRequest.newBuilder().setProductId("1").setDiscount(10).build();
+            client.setDiscount(discount).await().indefinitely();
+            int discountNum = client.getDiscount(GetDiscountRequest.newBuilder().setProductId("1").build()).await().indefinitely().getDiscount();
             assertEquals(10, discountNum);
         }
 }
