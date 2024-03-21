@@ -16,7 +16,8 @@ jobs:
         ports:
           - 27017:27017
         env:
-          MONGO_INITDB_DATABASE: discounts
+          QUARKUS_MONGODB_CONNECTION_STRING: mongodb://localhost:27017
+          QUARKUS_MONGODB_DATABASE: discounts
 
     steps:
       - name: Checkout Repository
