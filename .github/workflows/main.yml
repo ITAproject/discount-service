@@ -34,3 +34,16 @@ jobs:
 
       - name: Run Tests
         run: mvn -B test
+
+      - name: Docker login
+        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASS }}
+
+      - name: Build Docker image
+        run: docker build -t jernejofic444/discount-service -f src/main/docker/Dockerfile.jvm .
+
+
+      - name: Push Docker image
+        run: docker push jernejofic444/discount-service

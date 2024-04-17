@@ -1,32 +1,32 @@
 version: '3'
 services:
-  mongodb:
-    image: mongo
-    container_name: mongodb_discounts
+  mongo:
+    image: mongo:4.0.4
+    container_name: mongo_discounts
     ports:
-      - "27017:27017"
+      - "27019:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
-      - flashscore_discount_data:/data/db
+      - ./data:/data/db_data_discount
     networks:
-      - flashscore-network
+      - network
 
-  flashscore-discounts-api:
+  backend:
+    container_name: backend_discounts
     build:
       context: .
       dockerfile: src/main/docker/Dockerfile.jvm
-    container_name: flashscore-discounts-api
     ports:
-      - "8081:8080"
-      - "9001:9000"
+      - "9000:9000"
     environment:
-      - MONGO_URI=mongodb://mongodb:27017
-      - MONGO_DB=discounts
+      - QUARKUS_MONGODB_CONNECTION_STRING=mongodb://root:root@mongo:27017
+      - QUARKUS_MONGODB_DATABASE=discounts
     depends_on:
-      - mongodb
+      - mongo
     networks:
-      - flashscore-network
-volumes:
-  flashscore_discount_data:
+      - network
 
 networks:
-  flashscore-network:
+  network:
